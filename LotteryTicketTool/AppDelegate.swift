@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WCDBSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        let docPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+        debugPrint(docPath)
+        let database = Database(withPath: "\(docPath)/tikets.db")
+        do {
+            try database.create(table: "ticket", of: Ticket.self)
+        } catch let error {
+            print(error)
+        }
+        
         return true
     }
 

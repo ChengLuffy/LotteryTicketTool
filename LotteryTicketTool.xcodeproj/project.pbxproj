@@ -7,15 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D094EF6219BBF1B004226C8 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D094EF5219BBF1B004226C8 /* ListCell.swift */; };
 		1D2D04AA219972EE00DF2577 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2D04A9219972EE00DF2577 /* AppDelegate.swift */; };
 		1D2D04AC219972EE00DF2577 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2D04AB219972EE00DF2577 /* FirstViewController.swift */; };
 		1D2D04AE219972EE00DF2577 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2D04AD219972EE00DF2577 /* SecondViewController.swift */; };
 		1D2D04B1219972EE00DF2577 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D2D04AF219972EE00DF2577 /* Main.storyboard */; };
 		1D2D04B3219972EF00DF2577 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D2D04B2219972EF00DF2577 /* Assets.xcassets */; };
 		1D2D04B6219972EF00DF2577 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D2D04B4219972EF00DF2577 /* LaunchScreen.storyboard */; };
+		1D7035A2219AA090007DDB81 /* Genner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7035A1219AA090007DDB81 /* Genner.swift */; };
+		7DB7FC18F836B1ED9EFDA9CE /* Pods_LotteryTicketTool.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BAF543FF33FC687F558FF6A /* Pods_LotteryTicketTool.framework */; };
+		A07833FEE9E10D5E0EDE9F4A /* Pods-LotteryTicketTool-metadata.plist in Resources */ = {isa = PBXBuildFile; fileRef = C506A7D30D052518695E1D5A /* Pods-LotteryTicketTool-metadata.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0BAF543FF33FC687F558FF6A /* Pods_LotteryTicketTool.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LotteryTicketTool.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D094EF5219BBF1B004226C8 /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
 		1D2D04A6219972EE00DF2577 /* LotteryTicketTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LotteryTicketTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D2D04A9219972EE00DF2577 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1D2D04AB219972EE00DF2577 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -24,6 +30,10 @@
 		1D2D04B2219972EF00DF2577 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1D2D04B5219972EF00DF2577 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1D2D04B7219972EF00DF2577 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1D7035A1219AA090007DDB81 /* Genner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genner.swift; sourceTree = "<group>"; };
+		94114635CBD5A12911D24957 /* Pods-LotteryTicketTool.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LotteryTicketTool.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LotteryTicketTool/Pods-LotteryTicketTool.debug.xcconfig"; sourceTree = "<group>"; };
+		BC614DE53E6A3E974C85A4CF /* Pods-LotteryTicketTool.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LotteryTicketTool.release.xcconfig"; path = "Pods/Target Support Files/Pods-LotteryTicketTool/Pods-LotteryTicketTool.release.xcconfig"; sourceTree = "<group>"; };
+		C506A7D30D052518695E1D5A /* Pods-LotteryTicketTool-metadata.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "Pods-LotteryTicketTool-metadata.plist"; path = "Pods/Pods-LotteryTicketTool-metadata.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DB7FC18F836B1ED9EFDA9CE /* Pods_LotteryTicketTool.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +53,8 @@
 			children = (
 				1D2D04A8219972EE00DF2577 /* LotteryTicketTool */,
 				1D2D04A7219972EE00DF2577 /* Products */,
+				312E93EFF20722B89812658D /* Pods */,
+				896A86764D85190B5AAAF748 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -59,12 +72,32 @@
 				1D2D04A9219972EE00DF2577 /* AppDelegate.swift */,
 				1D2D04AB219972EE00DF2577 /* FirstViewController.swift */,
 				1D2D04AD219972EE00DF2577 /* SecondViewController.swift */,
+				1D094EF5219BBF1B004226C8 /* ListCell.swift */,
+				1D7035A1219AA090007DDB81 /* Genner.swift */,
 				1D2D04AF219972EE00DF2577 /* Main.storyboard */,
 				1D2D04B2219972EF00DF2577 /* Assets.xcassets */,
 				1D2D04B4219972EF00DF2577 /* LaunchScreen.storyboard */,
 				1D2D04B7219972EF00DF2577 /* Info.plist */,
 			);
 			path = LotteryTicketTool;
+			sourceTree = "<group>";
+		};
+		312E93EFF20722B89812658D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				94114635CBD5A12911D24957 /* Pods-LotteryTicketTool.debug.xcconfig */,
+				BC614DE53E6A3E974C85A4CF /* Pods-LotteryTicketTool.release.xcconfig */,
+				C506A7D30D052518695E1D5A /* Pods-LotteryTicketTool-metadata.plist */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		896A86764D85190B5AAAF748 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0BAF543FF33FC687F558FF6A /* Pods_LotteryTicketTool.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +107,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D2D04BA219972EF00DF2577 /* Build configuration list for PBXNativeTarget "LotteryTicketTool" */;
 			buildPhases = (
+				7608DB30D94ED6A3D83DE513 /* [CP] Check Pods Manifest.lock */,
 				1D2D04A2219972EE00DF2577 /* Sources */,
 				1D2D04A3219972EE00DF2577 /* Frameworks */,
 				1D2D04A4219972EE00DF2577 /* Resources */,
+				410BE4EC676E3F7A95653260 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -128,10 +163,64 @@
 				1D2D04B6219972EF00DF2577 /* LaunchScreen.storyboard in Resources */,
 				1D2D04B3219972EF00DF2577 /* Assets.xcassets in Resources */,
 				1D2D04B1219972EE00DF2577 /* Main.storyboard in Resources */,
+				A07833FEE9E10D5E0EDE9F4A /* Pods-LotteryTicketTool-metadata.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		410BE4EC676E3F7A95653260 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-LotteryTicketTool/Pods-LotteryTicketTool-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SQLiteRepairKit/sqliterk.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/WCDB.swift/WCDBSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/WCDBOptimizedSQLCipher/sqlcipher.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/sqliterk.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WCDBSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/sqlcipher.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LotteryTicketTool/Pods-LotteryTicketTool-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7608DB30D94ED6A3D83DE513 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LotteryTicketTool-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1D2D04A2219972EE00DF2577 /* Sources */ = {
@@ -139,7 +228,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D2D04AE219972EE00DF2577 /* SecondViewController.swift in Sources */,
+				1D7035A2219AA090007DDB81 /* Genner.swift in Sources */,
 				1D2D04AA219972EE00DF2577 /* AppDelegate.swift in Sources */,
+				1D094EF6219BBF1B004226C8 /* ListCell.swift in Sources */,
 				1D2D04AC219972EE00DF2577 /* FirstViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -284,6 +375,7 @@
 		};
 		1D2D04BB219972EF00DF2577 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 94114635CBD5A12911D24957 /* Pods-LotteryTicketTool.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -302,6 +394,7 @@
 		};
 		1D2D04BC219972EF00DF2577 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BC614DE53E6A3E974C85A4CF /* Pods-LotteryTicketTool.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

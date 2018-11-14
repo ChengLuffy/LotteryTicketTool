@@ -1,0 +1,6 @@
+framework module Pods_LotteryTicketTool {
+  umbrella header "Pods-LotteryTicketTool-umbrella.h"
+
+  export *
+  module * { export * }
+}
