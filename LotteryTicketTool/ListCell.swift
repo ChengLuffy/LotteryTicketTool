@@ -109,10 +109,10 @@ class ListCell: UITableViewCell {
     
     var ticket: Ticket? {
         didSet {
-            if ticket?.cate == 0 {
+            if ticket?.cate == 0 || ticket?.cate == 2 {
                 secondLabel1.isHidden = false
-                secondLabel1.text = "\(String(describing: ticket!.secontZoon![0]))"
-                secondLabel2.text = "\(String(describing: ticket!.secontZoon![1]))"
+                secondLabel1.text = "\(String(describing: ticket!.secondZoon![0]))"
+                secondLabel2.text = "\(String(describing: ticket!.secondZoon![1]))"
                 
                 firstLabel1.text = "\(String(describing: ticket!.firstZoon![0]))"
                 firstLabel2.text = "\(String(describing: ticket!.firstZoon![1]))"
@@ -122,7 +122,7 @@ class ListCell: UITableViewCell {
                 firstLabel6.isHidden = true
             } else {
                 secondLabel1.isHidden = true
-                secondLabel2.text = "\(String(describing: ticket!.secontZoon![0]))"
+                secondLabel2.text = "\(String(describing: ticket!.secondZoon![0]))"
                 
                 firstLabel1.text = "\(String(describing: ticket!.firstZoon![0]))"
                 firstLabel2.text = "\(String(describing: ticket!.firstZoon![1]))"

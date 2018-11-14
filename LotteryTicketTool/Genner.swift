@@ -47,7 +47,7 @@ class GenerateTicketTool {
         
         let luckyTiket = Ticket()
         luckyTiket.firstZoon = firstZoon.sorted(by: <)
-        luckyTiket.secontZoon = secondZoon.sorted(by: <)
+        luckyTiket.secondZoon = secondZoon.sorted(by: <)
         
         luckyTiket.date = Date()
         luckyTiket.cate = type == .sportsLottery ? 0 : 1
@@ -93,7 +93,7 @@ class GenerateTicketTool {
 
 class Ticket: TableCodable {
     var firstZoon: [Int]? = nil
-    var secontZoon: [Int]? = nil
+    var secondZoon: [Int]? = nil
     var date: Date? = nil
     var cate: Int = 0
     
@@ -101,7 +101,7 @@ class Ticket: TableCodable {
         typealias Root = Ticket
         static let objectRelationalMapping = TableBinding(CodingKeys.self)
         case firstZoon
-        case secontZoon
+        case secondZoon
         case date
         case cate
     }
@@ -113,7 +113,7 @@ class Ticket: TableCodable {
         }
         
         var str2 = String()
-        for j in secontZoon ?? [] {
+        for j in secondZoon ?? [] {
             str2.append("  \(j)")
         }
         return "first zoon: \(str1)\nsecond zoon:\(str2)"

@@ -5,4 +5,5 @@ plugin 'cocoapods-acknowledgements'
 target 'LotteryTicketTool' do
 	pod 'WCDB.swift'
     pod 'SnapKit'
+    pod 'Alamofire'
 end

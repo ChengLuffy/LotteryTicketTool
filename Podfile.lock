@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (4.7.3)
   - SnapKit (4.2.0)
   - SQLiteRepairKit (1.2.1):
     - WCDBOptimizedSQLCipher (~> 1.2.0)
@@ -8,22 +9,25 @@ PODS:
   - WCDBOptimizedSQLCipher (1.2.1)
 
 DEPENDENCIES:
+  - Alamofire
   - SnapKit
   - WCDB.swift
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Alamofire
     - SnapKit
     - SQLiteRepairKit
     - WCDB.swift
     - WCDBOptimizedSQLCipher
 
 SPEC CHECKSUMS:
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SQLiteRepairKit: 4d21bab9eff6a273f63da6815a0d1659e53f5bde
   WCDB.swift: 87aee41f5ca3aded9c6f9b68b0ef3e88918a5ee2
   WCDBOptimizedSQLCipher: baf44493b0c7a3d49e97bc5b64a3856f6428ddd1
 
-PODFILE CHECKSUM: 2a0b4834b9e8c85be5d708a4451e8fb98f62b725
+PODFILE CHECKSUM: 9f9da4c0d7b8b087b3ae2f0c7d210f0edb53192f
 
 COCOAPODS: 1.5.3
