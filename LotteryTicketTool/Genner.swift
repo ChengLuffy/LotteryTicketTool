@@ -62,11 +62,11 @@ class GenerateTicketTool {
         var j = 0
         
         switch type {
-            case .sportsLottery:
+            case .welfareLottery:
                 i = 33
                 j = 16
                 break
-            case .welfareLottery:
+            case .sportsLottery:
                 i = 35
                 j = 12
                 break
