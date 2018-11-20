@@ -15,7 +15,7 @@ class ListCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        label.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
+        label.backgroundColor = #colorLiteral(red: 0.262745098, green: 0.4862745098, blue: 0.8784313725, alpha: 1)
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
         label.textAlignment = .center
@@ -26,7 +26,7 @@ class ListCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        label.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
+        label.backgroundColor = #colorLiteral(red: 0.262745098, green: 0.4862745098, blue: 0.8784313725, alpha: 1)
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
         label.textAlignment = .center
@@ -37,7 +37,7 @@ class ListCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        label.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
+        label.backgroundColor = #colorLiteral(red: 0.262745098, green: 0.4862745098, blue: 0.8784313725, alpha: 1)
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
         label.textAlignment = .center
@@ -48,7 +48,7 @@ class ListCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        label.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
+        label.backgroundColor = #colorLiteral(red: 0.262745098, green: 0.4862745098, blue: 0.8784313725, alpha: 1)
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
         label.textAlignment = .center
@@ -59,7 +59,7 @@ class ListCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        label.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
+        label.backgroundColor = #colorLiteral(red: 0.262745098, green: 0.4862745098, blue: 0.8784313725, alpha: 1)
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
         label.textAlignment = .center
@@ -70,7 +70,7 @@ class ListCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        label.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
+        label.backgroundColor = #colorLiteral(red: 0.262745098, green: 0.4862745098, blue: 0.8784313725, alpha: 1)
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
         label.textAlignment = .center
@@ -81,7 +81,7 @@ class ListCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        label.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+        label.backgroundColor = #colorLiteral(red: 0.9490196078, green: 0.3137254902, blue: 0.3882352941, alpha: 1)
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
         label.textAlignment = .center
@@ -92,7 +92,7 @@ class ListCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        label.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+        label.backgroundColor = #colorLiteral(red: 0.9490196078, green: 0.3137254902, blue: 0.3882352941, alpha: 1)
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
         label.textAlignment = .center
