@@ -119,6 +119,26 @@ class FirstViewController: UIViewController {
             }
         }
     }
+    
+    @IBAction func deleteAction(_ sender: Any) {
+        let alertC = UIAlertController(title: "确定删除所有随机生成历史吗?", message: nil, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
+            
+        }
+        let sureAction = UIAlertAction(title: "确定", style: .destructive) { (_) in
+            do {
+                try self.database.delete(fromTable: "ticket", where: Ticket.Properties.cate == 0)
+            } catch let error {
+                debugPrint(error)
+            }
+            self.reloadData()
+        }
+        alertC.addAction(cancelAction)
+        alertC.addAction(sureAction)
+        present(alertC, animated: true) {
+            
+        }
+    }
 }
 
 extension FirstViewController: UITableViewDelegate, UITableViewDataSource {

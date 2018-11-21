@@ -15,6 +15,7 @@
 		1D2D04B3219972EF00DF2577 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D2D04B2219972EF00DF2577 /* Assets.xcassets */; };
 		1D2D04B6219972EF00DF2577 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D2D04B4219972EF00DF2577 /* LaunchScreen.storyboard */; };
 		1D7035A2219AA090007DDB81 /* Genner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7035A1219AA090007DDB81 /* Genner.swift */; };
+		1D7DEB9521A4F33B0011E38A /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7DEB9421A4F33B0011E38A /* TabBarViewController.swift */; };
 		7DB7FC18F836B1ED9EFDA9CE /* Pods_LotteryTicketTool.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BAF543FF33FC687F558FF6A /* Pods_LotteryTicketTool.framework */; };
 		A07833FEE9E10D5E0EDE9F4A /* Pods-LotteryTicketTool-metadata.plist in Resources */ = {isa = PBXBuildFile; fileRef = C506A7D30D052518695E1D5A /* Pods-LotteryTicketTool-metadata.plist */; };
 /* End PBXBuildFile section */
@@ -31,6 +32,7 @@
 		1D2D04B5219972EF00DF2577 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1D2D04B7219972EF00DF2577 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D7035A1219AA090007DDB81 /* Genner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genner.swift; sourceTree = "<group>"; };
+		1D7DEB9421A4F33B0011E38A /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		94114635CBD5A12911D24957 /* Pods-LotteryTicketTool.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LotteryTicketTool.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LotteryTicketTool/Pods-LotteryTicketTool.debug.xcconfig"; sourceTree = "<group>"; };
 		BC614DE53E6A3E974C85A4CF /* Pods-LotteryTicketTool.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LotteryTicketTool.release.xcconfig"; path = "Pods/Target Support Files/Pods-LotteryTicketTool/Pods-LotteryTicketTool.release.xcconfig"; sourceTree = "<group>"; };
 		C506A7D30D052518695E1D5A /* Pods-LotteryTicketTool-metadata.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "Pods-LotteryTicketTool-metadata.plist"; path = "Pods/Pods-LotteryTicketTool-metadata.plist"; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				1D2D04A9219972EE00DF2577 /* AppDelegate.swift */,
+				1D7DEB9421A4F33B0011E38A /* TabBarViewController.swift */,
 				1D2D04AB219972EE00DF2577 /* FirstViewController.swift */,
 				1D2D04AD219972EE00DF2577 /* SecondViewController.swift */,
 				1D094EF5219BBF1B004226C8 /* ListCell.swift */,
@@ -233,6 +236,7 @@
 				1D7035A2219AA090007DDB81 /* Genner.swift in Sources */,
 				1D2D04AA219972EE00DF2577 /* AppDelegate.swift in Sources */,
 				1D094EF6219BBF1B004226C8 /* ListCell.swift in Sources */,
+				1D7DEB9521A4F33B0011E38A /* TabBarViewController.swift in Sources */,
 				1D2D04AC219972EE00DF2577 /* FirstViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
