@@ -84,7 +84,7 @@ class FirstViewController: UIViewController {
                 }
                 ticket.firstZoon = firstZoon
                 
-                let str2 = arr?.first
+                let str2 = arr?.last
                 let arr2 = str2?.components(separatedBy: ",")
                 var secondZoon = [Int]()
                 for temp in arr2! {
