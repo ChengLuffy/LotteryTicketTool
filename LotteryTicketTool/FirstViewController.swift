@@ -11,6 +11,8 @@ import WCDBSwift
 import Alamofire
 
 class FirstViewController: UIViewController {
+    
+    @IBInspectable open var type: Int = 0
 
     @IBOutlet weak var tableView: UITableView!
     var dataSource = [Ticket]()
@@ -42,13 +44,13 @@ class FirstViewController: UIViewController {
     
     func reloadData() {
         do {
-            dataSource = try database.getObjects(on: Ticket.CodingKeys.all, fromTable: "ticket", where: Ticket.Properties.cate == 0, orderBy: [Ticket.Properties.date.asOrder(by: .descending)])
+            dataSource = try database.getObjects(on: Ticket.CodingKeys.all, fromTable: "ticket", where: Ticket.Properties.cate == type, orderBy: [Ticket.Properties.date.asOrder(by: .descending)])
         } catch let error {
             debugPrint(error)
         }
         
         do {
-            netDataSource = try database.getObjects(on: Ticket.CodingKeys.all, fromTable: "ticket", where: Ticket.Properties.cate == 2)
+            netDataSource = try database.getObjects(on: Ticket.CodingKeys.all, fromTable: "ticket", where: Ticket.Properties.cate == type + 2)
         } catch let error {
             debugPrint(error)
         }
@@ -57,7 +59,7 @@ class FirstViewController: UIViewController {
     }
     
     @IBAction func getData() {
-        Alamofire.request("http://f.apiplus.net/dlt-1.json").responseJSON { (response) in
+        Alamofire.request(type == 0 ? "http://f.apiplus.net/dlt-1.json" : "http://f.apiplus.net/ssq-1.json").responseJSON { (response) in
             response.result.ifSuccess {
                 print(response.result.value ?? "nil")
                 guard let result: NSDictionary = response.result.value as? NSDictionary else {
@@ -98,10 +100,10 @@ class FirstViewController: UIViewController {
                 let date = df.date(from: dateStr)
                 ticket.date = date
                 
-                ticket.cate = 2
+                ticket.cate = self.type + 2
                 
                 do {
-                    try self.database.delete(fromTable: "ticket", where: Ticket.Properties.cate == 2)
+                    try self.database.delete(fromTable: "ticket", where: Ticket.Properties.cate == self.type + 2)
                 } catch let error {
                     debugPrint(error)
                 }
@@ -127,7 +129,7 @@ class FirstViewController: UIViewController {
         }
         let sureAction = UIAlertAction(title: "确定", style: .destructive) { (_) in
             do {
-                try self.database.delete(fromTable: "ticket", where: Ticket.Properties.cate == 0)
+                try self.database.delete(fromTable: "ticket", where: Ticket.Properties.cate == self.type)
             } catch let error {
                 debugPrint(error)
             }
@@ -180,7 +182,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             do {
-                try database.delete(fromTable: "ticket", where: Ticket.Properties.cate == 0, orderBy: [Ticket.Properties.date.asOrder(by: .descending)], limit: 1, offset: indexPath.row)
+                try database.delete(fromTable: "ticket", where: Ticket.Properties.cate == self.type, orderBy: [Ticket.Properties.date.asOrder(by: .descending)], limit: 1, offset: indexPath.row)
             } catch let error {
                 debugPrint(error)
             }

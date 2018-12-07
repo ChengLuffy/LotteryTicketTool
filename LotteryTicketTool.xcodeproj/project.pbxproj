@@ -10,7 +10,6 @@
 		1D094EF6219BBF1B004226C8 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D094EF5219BBF1B004226C8 /* ListCell.swift */; };
 		1D2D04AA219972EE00DF2577 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2D04A9219972EE00DF2577 /* AppDelegate.swift */; };
 		1D2D04AC219972EE00DF2577 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2D04AB219972EE00DF2577 /* FirstViewController.swift */; };
-		1D2D04AE219972EE00DF2577 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2D04AD219972EE00DF2577 /* SecondViewController.swift */; };
 		1D2D04B1219972EE00DF2577 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D2D04AF219972EE00DF2577 /* Main.storyboard */; };
 		1D2D04B3219972EF00DF2577 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D2D04B2219972EF00DF2577 /* Assets.xcassets */; };
 		1D2D04B6219972EF00DF2577 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D2D04B4219972EF00DF2577 /* LaunchScreen.storyboard */; };
@@ -26,7 +25,6 @@
 		1D2D04A6219972EE00DF2577 /* LotteryTicketTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LotteryTicketTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D2D04A9219972EE00DF2577 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1D2D04AB219972EE00DF2577 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		1D2D04AD219972EE00DF2577 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		1D2D04B0219972EE00DF2577 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1D2D04B2219972EF00DF2577 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1D2D04B5219972EF00DF2577 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -74,7 +72,6 @@
 				1D2D04A9219972EE00DF2577 /* AppDelegate.swift */,
 				1D7DEB9421A4F33B0011E38A /* TabBarViewController.swift */,
 				1D2D04AB219972EE00DF2577 /* FirstViewController.swift */,
-				1D2D04AD219972EE00DF2577 /* SecondViewController.swift */,
 				1D094EF5219BBF1B004226C8 /* ListCell.swift */,
 				1D7035A1219AA090007DDB81 /* Genner.swift */,
 				1D2D04AF219972EE00DF2577 /* Main.storyboard */,
@@ -232,7 +229,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D2D04AE219972EE00DF2577 /* SecondViewController.swift in Sources */,
 				1D7035A2219AA090007DDB81 /* Genner.swift in Sources */,
 				1D2D04AA219972EE00DF2577 /* AppDelegate.swift in Sources */,
 				1D094EF6219BBF1B004226C8 /* ListCell.swift in Sources */,
