@@ -15,7 +15,7 @@
 			<key>homepage</key>
 			<string>https://github.com/Alamofire/Alamofire</string>
 			<key>licenseText</key>
-			<string>Copyright (c) 2014-2018 Alamofire Software Foundation (http://alamofire.org/)
+			<string>Copyright (c) 2014 Alamofire Software Foundation (http://alamofire.org/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +44,7 @@ THE SOFTWARE.
 			<key>summary</key>
 			<string>Elegant HTTP Networking in Swift</string>
 			<key>version</key>
-			<string>4.7.3</string>
+			<string>4.8.2</string>
 		</dict>
 		<dict>
 			<key>authors</key>
@@ -485,7 +485,7 @@ POSSIBILITY OF SUCH DAMAGE.
 			<key>summary</key>
 			<string>Repair kit for SQLite based database</string>
 			<key>version</key>
-			<string>1.2.1</string>
+			<string>1.2.2</string>
 		</dict>
 		<dict>
 			<key>authors</key>
@@ -527,7 +527,7 @@ THE SOFTWARE.
 			<key>summary</key>
 			<string>Harness the power of auto layout with a simplified, chainable, and compile time safe syntax.</string>
 			<key>version</key>
-			<string>4.2.0</string>
+			<string>5.0.0</string>
 		</dict>
 		<dict>
 			<key>authors</key>
@@ -969,7 +969,7 @@ POSSIBILITY OF SUCH DAMAGE.
 			<key>summary</key>
 			<string>WCDB is a cross-platform database framework developed by WeChat.</string>
 			<key>version</key>
-			<string>1.0.7.5</string>
+			<string>1.0.8.2</string>
 		</dict>
 		<dict>
 			<key>authors</key>

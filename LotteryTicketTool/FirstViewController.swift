@@ -32,7 +32,7 @@ class FirstViewController: UIViewController {
     }
 
     @IBAction func generateAction(_ sender: Any) {
-        let ticket = GenerateTicketTool.generateTicket(with: .sportsLottery)
+        let ticket = GenerateTicketTool.generateTicket(with: type == 0 ? .sportsLottery : .welfareLottery)
         print(ticket.describe())
         do {
             try database.insert(objects: ticket, intoTable: "ticket")
