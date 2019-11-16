@@ -18,7 +18,7 @@ class TabBarViewController: UITabBarController {
             let item: UITabBarItem = self.tabBar.items?[i] ?? UITabBarItem()
             item.image = item.image?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
             item.selectedImage = item.selectedImage?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
-            item.setTitleTextAttributes([NSAttributedString.Key.foregroundColor:i == 0 ? #colorLiteral(red: 0.9490196078, green: 0.3137254902, blue: 0.3882352941, alpha: 1) : #colorLiteral(red: 0.862745098, green: 0.2431372549, blue: 0.9215686275, alpha: 1)], for: .selected)
+            item.setTitleTextAttributes([NSAttributedString.Key.foregroundColor:i == 1 ? #colorLiteral(red: 0.9490196078, green: 0.3137254902, blue: 0.3882352941, alpha: 1) : #colorLiteral(red: 0.862745098, green: 0.2431372549, blue: 0.9215686275, alpha: 1)], for: .selected)
         }
     }
     
