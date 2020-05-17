@@ -107,37 +107,117 @@ class ListCell: UITableViewCell {
         return label
     }()
     
+    lazy var purchasedLabel: UILabel = {
+        let label = UILabel()
+        label.text = "已购"
+        label.textColor = UIColor.systemBlue
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.isHidden = true
+        return label
+    }()
+    
+    lazy var expectLabel: UILabel = {
+        let label = UILabel()
+        label.text = "期"
+        label.textColor = UIColor.lightGray
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textAlignment = .right
+        return label
+    }()
+    
+    lazy var degreeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "1等奖"
+        label.textColor = UIColor.systemRed
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textAlignment = .left
+        return label
+    }()
+    
     var ticket: Ticket? {
         didSet {
+            if ticket == nil {
+                return
+            }
             if ticket?.cate == 0 || ticket?.cate == 2 {
                 secondLabel1.isHidden = false
-                secondLabel1.text = "\(String(describing: ticket!.secondZoon![0]))"
-                secondLabel2.text = "\(String(describing: ticket!.secondZoon![1]))"
                 
-                firstLabel1.text = "\(String(describing: ticket!.firstZoon![0]))"
-                firstLabel2.text = "\(String(describing: ticket!.firstZoon![1]))"
-                firstLabel3.text = "\(String(describing: ticket!.firstZoon![2]))"
-                firstLabel4.text = "\(String(describing: ticket!.firstZoon![3]))"
-                firstLabel5.text = "\(String(describing: ticket!.firstZoon![4]))"
+                let firstZoon = ticket?.opencode.components(separatedBy: "+").first?.components(separatedBy: ",")
+                let secondZoon = ticket?.opencode.components(separatedBy: "+").last?.components(separatedBy: ",")
+                
+                
+                secondLabel1.text = secondZoon![0]
+                secondLabel2.text = secondZoon![1]
+                
+                firstLabel1.text = firstZoon![0]
+                firstLabel2.text = firstZoon![1]
+                firstLabel3.text = firstZoon![2]
+                firstLabel4.text = firstZoon![3]
+                firstLabel5.text = firstZoon![4]
                 firstLabel6.isHidden = true
             } else {
-                secondLabel1.isHidden = true
-                secondLabel2.text = "\(String(describing: ticket!.secondZoon![0]))"
                 
-                firstLabel1.text = "\(String(describing: ticket!.firstZoon![0]))"
-                firstLabel2.text = "\(String(describing: ticket!.firstZoon![1]))"
-                firstLabel3.text = "\(String(describing: ticket!.firstZoon![2]))"
-                firstLabel4.text = "\(String(describing: ticket!.firstZoon![3]))"
-                firstLabel5.text = "\(String(describing: ticket!.firstZoon![4]))"
-                firstLabel6.text = "\(String(describing: ticket!.firstZoon![5]))"
+                let firstZoon = ticket?.opencode.components(separatedBy: "+").first?.components(separatedBy: ",")
+                let secondZoon = ticket?.opencode.components(separatedBy: "+").last?.components(separatedBy: ",")
+                
+                secondLabel1.isHidden = true
+                secondLabel2.text = secondZoon![0]
+                
+                firstLabel1.text = firstZoon![0]
+                firstLabel2.text = firstZoon![1]
+                firstLabel3.text = firstZoon![2]
+                firstLabel4.text = firstZoon![3]
+                firstLabel5.text = firstZoon![4]
+                firstLabel6.text = firstZoon![5]
                 firstLabel6.isHidden = false
             }
             
-            let date = ticket!.date!
+            let date = Date(timeIntervalSince1970: TimeInterval(ticket!.opentimestamp))
             let df = DateFormatter()
             df.dateFormat = "yyyy-MM-dd HH:mm:SS"
             let str = df.string(from: date)
             dateLabel.text = str
+            
+            if ticket?.degree == 0 {
+                degreeLabel.isHidden = true
+            } else if ticket?.degree == -1 {
+                degreeLabel.text = "未中奖"
+                degreeLabel.isHidden = !(ticket!.ticketPurchased!)
+            } else {
+                var temp = ""
+                switch ticket!.degree! {
+                case 1:
+                    temp = "发财了"
+                case 2:
+                    temp = ticket?.cate == 0 ? "发小财了" : "发小财了"
+                case 3:
+                    temp = ticket?.cate == 0 ? "10000元" : "3000元"
+                case 4:
+                    temp = ticket?.cate == 0 ? "3000元" : "200元"
+                case 5:
+                    temp = ticket?.cate == 0 ? "300元" : "10元"
+                case 6:
+                    temp = ticket?.cate == 0 ? "200元" : "5元"
+                case 7:
+                    temp = "100元"
+                case 8:
+                    temp = "15元"
+                case 9:
+                    temp = "5元"
+                default:
+                    temp = "好可惜"
+                }
+                degreeLabel.text = "\(ticket!.degree!)等奖" + temp
+                degreeLabel.isHidden = !(ticket!.ticketPurchased!)
+            }
+            
+            if ticket?.ticketPurchased == nil {
+                purchasedLabel.isHidden = true
+            } else {
+                purchasedLabel.isHidden = !(ticket!.ticketPurchased!)
+            }
+            
+            expectLabel.text = "\(ticket!.expect)期"
         }
     }
     
@@ -173,6 +253,9 @@ class ListCell: UITableViewCell {
         contentView.addSubview(secondLabel1)
         contentView.addSubview(secondLabel2)
         
+        contentView.addSubview(purchasedLabel)
+        contentView.addSubview(expectLabel)
+        contentView.addSubview(degreeLabel)
         contentView.addSubview(dateLabel)
     }
     
@@ -180,56 +263,71 @@ class ListCell: UITableViewCell {
         super.layoutSubviews()
         
         firstLabel1.snp.makeConstraints { (maker) in
-            maker.centerY.equalTo(contentView).offset(-3)
-            maker.left.equalTo(contentView.snp_leftMargin).offset(15)
+            maker.centerY.equalTo(contentView).offset(-8)
+            maker.left.equalTo(contentView.snp_leftMargin)
             maker.width.height.equalTo(30)
         }
         
         firstLabel2.snp.makeConstraints { (maker) in
-            maker.centerY.equalTo(contentView).offset(-3)
+            maker.centerY.equalTo(contentView).offset(-8)
             maker.left.equalTo(firstLabel1.snp_rightMargin).offset(15)
             maker.width.height.equalTo(30)
         }
         
         firstLabel3.snp.makeConstraints { (maker) in
-            maker.centerY.equalTo(contentView).offset(-3)
+            maker.centerY.equalTo(contentView).offset(-8)
             maker.left.equalTo(firstLabel2.snp_rightMargin).offset(15)
             maker.width.height.equalTo(30)
         }
         
         firstLabel4.snp.makeConstraints { (maker) in
-            maker.centerY.equalTo(contentView).offset(-3)
+            maker.centerY.equalTo(contentView).offset(-8)
             maker.left.equalTo(firstLabel3.snp_rightMargin).offset(15)
             maker.width.height.equalTo(30)
         }
         
         firstLabel5.snp.makeConstraints { (maker) in
-            maker.centerY.equalTo(contentView).offset(-3)
+            maker.centerY.equalTo(contentView).offset(-8)
             maker.left.equalTo(firstLabel4.snp_rightMargin).offset(15)
             maker.width.height.equalTo(30)
         }
         
         firstLabel6.snp.makeConstraints { (maker) in
-            maker.centerY.equalTo(contentView).offset(-3)
+            maker.centerY.equalTo(contentView).offset(-8)
             maker.left.equalTo(firstLabel5.snp_rightMargin).offset(15)
             maker.width.height.equalTo(30)
         }
         
         secondLabel2.snp.makeConstraints { (maker) in
-            maker.centerY.equalTo(contentView).offset(-3)
-            maker.right.equalTo(contentView.snp_rightMargin).offset(-15)
+            maker.centerY.equalTo(contentView).offset(-8)
+            maker.right.equalTo(contentView.snp_rightMargin)
             maker.width.height.equalTo(30)
         }
         
         secondLabel1.snp.makeConstraints { (maker) in
-            maker.centerY.equalTo(contentView).offset(-3)
+            maker.centerY.equalTo(contentView).offset(-8)
             maker.right.equalTo(secondLabel2.snp_leftMargin).offset(-15)
             maker.width.height.equalTo(30)
         }
         
+        purchasedLabel.snp.makeConstraints { (maker) in
+            maker.bottom.equalTo(contentView).offset(-8).offset(-8)
+            maker.left.equalTo(contentView.snp_leftMargin)
+        }
+        
+        degreeLabel.snp.makeConstraints { (maker) in
+            maker.bottom.equalTo(contentView).offset(-8)
+            maker.left.equalTo(purchasedLabel.snp.right).offset(8)
+        }
+        
+        expectLabel.snp.makeConstraints { (maker) in
+            maker.bottom.equalTo(contentView).offset(-8)
+            maker.right.equalTo(dateLabel.snp.left).offset(-8)
+        }
+        
         dateLabel.snp.makeConstraints { (maker) in
-            maker.bottom.equalTo(contentView)
-            maker.right.equalTo(contentView.snp_rightMargin).offset(-15)
+            maker.bottom.equalTo(contentView).offset(-8)
+            maker.right.equalTo(contentView.snp_rightMargin)
         }
     }
     

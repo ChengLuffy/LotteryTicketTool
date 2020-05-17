@@ -8,6 +8,7 @@
 
 import Foundation
 import WCDBSwift
+import SwiftRandom
 
 enum TicketType {
     case sportsLottery
@@ -21,7 +22,7 @@ class GenerateTicketTool {
         var secondPool: [Int]? = nil
     }
     
-    class func generateTicket(with type: TicketType) -> Ticket {
+    class func generateTicket(with type: TicketType, expect: Int) -> Ticket {
         
         let pool = generatePool(with: type)
         
@@ -34,22 +35,28 @@ class GenerateTicketTool {
         let i = type == .sportsLottery ? 5 : 6
         let j = type == .sportsLottery ? 2 : 1
         for _ in 1...i {
-            let index = Int.random(in: 0...(firstPool.count - 1))
-            firstZoon.append(firstPool[index])
-            firstPool.remove(at: index)
+            let item = firstPool.randomItem()!
+            firstZoon.append(item)
+            firstPool.removeAll(where: { $0 == item })
         }
-        
+        firstZoon.sort()
         for _ in 1...j {
-            let index = Int.random(in: 0...(secondPool.count - 1))
-            secondZoon.append(secondPool[index])
-            secondPool.remove(at: index)
+            let item = secondPool.randomItem()!
+            secondZoon.append(item)
+            secondPool.removeAll(where: { $0 == item })
         }
+        secondZoon.sort()
+        let first = firstZoon.map({ return "\($0)" }).joined(separator: ",")
+        let second = secondZoon.map({ return "\($0)" }).joined(separator: ",")
+        let opencode = first + "+" + second
         
-        let luckyTiket = Ticket()
-        luckyTiket.firstZoon = firstZoon.sorted(by: <)
-        luckyTiket.secondZoon = secondZoon.sorted(by: <)
+        let date = Date()
+        let opentimestamp = Int64(date.timeIntervalSince1970)
+        let dateFormater = DateFormatter()
+        dateFormater.dateFormat = "yyyy-MM-dd HH:mm:SS"
+        let opentime = dateFormater.string(from: date)
         
-        luckyTiket.date = Date()
+        var luckyTiket = Ticket.init(expect: "\(expect)", opencode: opencode, opentime: opentime, opentimestamp: opentimestamp)
         luckyTiket.cate = type == .sportsLottery ? 0 : 1
         
         return luckyTiket
@@ -91,32 +98,38 @@ class GenerateTicketTool {
     }
 }
 
-class Ticket: TableCodable {
-    var firstZoon: [Int]? = nil
-    var secondZoon: [Int]? = nil
-    var date: Date? = nil
-    var cate: Int = 0
+struct Response: Codable {
+    let code: String
+    let data: [Ticket]
+}
+
+struct Ticket: TableCodable {
+    let expect: String
+    let opencode: String
+    let opentime: String
+    let opentimestamp: Int64
+    var cate: Int? = 0
+    var ticketPurchased: Bool? = false
+    var degree: Int? = 0
     
     enum CodingKeys: String, CodingTableKey {
         typealias Root = Ticket
         static let objectRelationalMapping = TableBinding(CodingKeys.self)
-        case firstZoon
-        case secondZoon
-        case date
+        case expect
+        case opencode
+        case opentime
+        case opentimestamp
         case cate
-    }
-    
-    func describe() -> String {
-        var str1 = String()
-        for i in firstZoon ?? [] {
-            str1.append("  \(i)")
+        case ticketPurchased
+        case degree
+
+        static var columnConstraintBindings: [CodingKeys: ColumnConstraintBinding]? {
+            return [
+                opentimestamp: ColumnConstraintBinding(isPrimary: true),
+                cate: ColumnConstraintBinding(isNotNull: false, defaultTo: ColumnDef.DefaultType.int64(0)),
+                ticketPurchased: ColumnConstraintBinding(isNotNull: false, defaultTo: ColumnDef.DefaultType.bool(false)),
+                degree: ColumnConstraintBinding(isNotNull: false, defaultTo: ColumnDef.DefaultType.int32(0))
+            ]
         }
-        
-        var str2 = String()
-        for j in secondZoon ?? [] {
-            str2.append("  \(j)")
-        }
-        return "first zoon: \(str1)\nsecond zoon:\(str2)"
     }
-    
 }

@@ -9,6 +9,7 @@
 import UIKit
 import WCDBSwift
 import Alamofire
+import Moya
 
 class FirstViewController: UIViewController {
     
@@ -17,6 +18,7 @@ class FirstViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var dataSource = [Ticket]()
     var netDataSource = [Ticket]()
+    var expectNext: Int?
     lazy var database: Database = {
         let docPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
         let database = Database(withPath: "\(docPath)/tikets.db")
@@ -26,15 +28,13 @@ class FirstViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        navigationController?.navigationBar.isTranslucent = false
         tableView.tableFooterView = UIView()
-        reloadData()
         getData()
     }
 
     @IBAction func generateAction(_ sender: Any) {
-        let ticket = GenerateTicketTool.generateTicket(with: type == 0 ? .sportsLottery : .welfareLottery)
-        print(ticket.describe())
+        guard let expect = expectNext else { return }
+        let ticket = GenerateTicketTool.generateTicket(with: type == 0 ? .sportsLottery : .welfareLottery, expect: expect)
         do {
             try database.insert(objects: ticket, intoTable: "ticket")
         } catch let error {
@@ -45,92 +45,144 @@ class FirstViewController: UIViewController {
     
     func reloadData() {
         do {
-            dataSource = try database.getObjects(on: Ticket.CodingKeys.all, fromTable: "ticket", where: Ticket.Properties.cate == type, orderBy: [Ticket.Properties.date.asOrder(by: .descending)])
+            dataSource = try database.getObjects(on: Ticket.Properties.all, fromTable: "ticket", where: Ticket.Properties.cate == type, orderBy: [Ticket.Properties.opentimestamp.asOrder(by: .descending)])
         } catch let error {
             debugPrint(error)
         }
         
         do {
-            netDataSource = try database.getObjects(on: Ticket.CodingKeys.all, fromTable: "ticket", where: Ticket.Properties.cate == type + 2)
+            netDataSource = try database.getObjects(on: Ticket.Properties.all, fromTable: "ticket", where: Ticket.Properties.cate == type + 2, orderBy: [Ticket.Properties.opentimestamp.asOrder(by: .descending)], offset: 1)
         } catch let error {
             debugPrint(error)
         }
         
-        tableView.reloadData()
+        if netDataSource.count > 0 {
+            expectNext = Int(netDataSource.first!.expect)! + 1
+        }
+        let arr = dataSource.filter({ $0.ticketPurchased == true && $0.degree == 0})
+        if arr.count > 0 {
+            for (index, ticket) in arr.enumerated() {
+                do {
+                    let arr: [Ticket] = try database.getObjects(on: Ticket.CodingKeys.all, fromTable: "ticket", where: Ticket.Properties.expect == ticket.expect && Ticket.Properties.cate == self.type + 2)
+                    guard let opened = arr.first else {
+                        self.tableView.reloadData()
+                        return
+                    }
+                    let code = opened.opencode
+                    let first = code.components(separatedBy: "+").first?.components(separatedBy: ",").map { (str) -> Int in
+                        return Int(str)!
+                    }
+                    let second = code.components(separatedBy: "+").last?.components(separatedBy: ",").map { (str) -> Int in
+                        return Int(str)!
+                    }
+                    
+                    let code1 = ticket.opencode
+                    let first1 = code1.components(separatedBy: "+").first?.components(separatedBy: ",").map { (str) -> Int in
+                        return Int(str)!
+                    }
+                    let second1 = code1.components(separatedBy: "+").last?.components(separatedBy: ",").map { (str) -> Int in
+                        return Int(str)!
+                    }
+                    
+                    var degree = -1
+                    let result1 = intersection(first!, first1!)
+                    let result2 = intersection(second!, second1!)
+                    if type == 1 {
+                        if result1.count == 6 && result2.count == 1 {
+                            degree = 1
+                        } else if result1.count == 6 && result2.count == 0 {
+                            degree = 2
+                        } else if result1.count == 5 && result2.count == 1 {
+                            degree = 3
+                        } else if result1.count == 5 && result2.count == 0 || result1.count == 4 && result2.count == 1 {
+                            degree = 4
+                        } else if result1.count == 4 && result2.count == 0 || result1.count == 3 && result2.count == 1 {
+                            degree = 5
+                        } else if result1.count == 0 && result2.count == 1 {
+                            degree = 6
+                        }
+                    } else {
+                        if result1.count == 5 && result2.count == 2 {
+                            degree = 1
+                        } else if result1.count == 5 && result2.count == 1 {
+                            degree = 2
+                        } else if result1.count == 5 && result2.count == 0 {
+                            degree = 3
+                        } else if result1.count == 4 && result2.count == 2 {
+                            degree = 4
+                        } else if result1.count == 4 && result2.count == 1 {
+                            degree = 5
+                        } else if result1.count == 3 && result2.count == 2 {
+                            degree = 6
+                        } else if result1.count == 4 && result2.count == 0 {
+                            degree = 7
+                        } else if result1.count == 3 && result2.count == 1 || result1.count == 2 && result2.count == 2 {
+                            degree = 8
+                        } else if result1.count == 3 && result2.count == 0 || result1.count == 1 && result2.count == 2 || result1.count == 2 && result2.count == 1 || result1.count == 0 && result2.count == 2 {
+                            degree = 9
+                        }
+                    }
+                    var ticket = ticket
+                    ticket.degree = degree
+                    try database.update(table: "ticket", on: Ticket.Properties.degree, with: ticket, where: Ticket.Properties.opentimestamp == ticket.opentimestamp)
+                    dataSource[index] = ticket
+                } catch {
+                    debugPrint(error)
+                }
+            }
+            tableView.reloadData()
+        } else {
+            tableView.reloadData()
+        }
     }
     
     @IBAction func getData() {
-        Alamofire.request(type == 0 ? "http://f.apiplus.net/dlt-1.json" : "http://f.apiplus.net/ssq-1.json").responseJSON { (response) in
-            response.result.ifSuccess {
-                print(response.result.value ?? "nil")
-                guard let result: NSDictionary = response.result.value as? NSDictionary else {
-                    return
+        
+        let apiTool = MoyaProvider<ApiTool>()
+        apiTool.request(type == 0 ? ApiTool.getDLT : ApiTool.getSSQ) { (result) in
+            switch result {
+            case let .success(result):
+                let resp = try! result.map(Response.self)
+                
+                var arr = resp.data.map { (ticket) -> Ticket in
+                    var ticket = ticket
+                    ticket.cate = self.type + 2
+                    ticket.degree = 0
+                    ticket.ticketPurchased = false
+                    return ticket
                 }
                 
-                guard let data: NSArray = result["data"] as? NSArray else {
-                    return
-                }
-                
-                guard let obj: NSDictionary = data.firstObject as? NSDictionary else {
-                    return
-                }
-                
-                let code = obj["opencode"] as? NSString
-                let arr = code?.components(separatedBy: "+")
-                let ticket = Ticket()
-                
-                let str1 = arr?.first
-                let arr1 = str1?.components(separatedBy: ",")
-                var firstZoon = [Int]()
-                for temp in arr1! {
-                    firstZoon.append((temp as NSString).integerValue)
-                }
-                ticket.firstZoon = firstZoon
-                
-                let str2 = arr?.last
-                let arr2 = str2?.components(separatedBy: ",")
-                var secondZoon = [Int]()
-                for temp in arr2! {
-                    secondZoon.append((temp as NSString).integerValue)
-                }
-                ticket.secondZoon = secondZoon
-                
-                let dateStr = obj["opentime"] as! String
-                let df = DateFormatter()
-                df.dateFormat = "yyyy-MM-dd HH:mm:SS"
-                let date = df.date(from: dateStr)
-                ticket.date = date
-                
-                ticket.cate = self.type + 2
-                
-                do {
-                    try self.database.delete(fromTable: "ticket", where: Ticket.Properties.cate == self.type + 2)
-                } catch let error {
-                    debugPrint(error)
+                arr = arr.sorted { (a, b) -> Bool in
+                    return a.opentimestamp < b.opentimestamp
                 }
                 
                 do {
-                    try self.database.insert(objects: ticket, intoTable: "ticket")
-                } catch let error {
+                    for ticket in arr {
+                        let dataSource: [Ticket] = try self.database.getObjects(on: Ticket.CodingKeys.all, fromTable: "ticket", where: Ticket.Properties.expect == ticket.expect && Ticket.Properties.cate == ticket.cate!)
+                        if dataSource.count > 0 {
+                        } else {
+                            try self.database.insert(objects: arr, intoTable: "ticket")
+                        }
+                    }
+                } catch {
                     debugPrint(error)
                 }
                 
                 self.reloadData()
-            }
-            
-            response.result.ifFailure {
+            case let .failure(error):
+                debugPrint(error.errorUserInfo)
             }
         }
     }
     
     @IBAction func deleteAction(_ sender: Any) {
-        let alertC = UIAlertController(title: "确定删除所有随机生成历史吗?", message: nil, preferredStyle: .alert)
+        let alertC = UIAlertController(title: "确定删除未购历史吗?", message: nil, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
             
         }
         let sureAction = UIAlertAction(title: "确定", style: .destructive) { (_) in
             do {
-                try self.database.delete(fromTable: "ticket", where: Ticket.Properties.cate == self.type)
+                try self.database.delete(fromTable: "ticket", where: Ticket.Properties.cate == self.type && Ticket.Properties.ticketPurchased == false)
             } catch let error {
                 debugPrint(error)
             }
@@ -146,11 +198,11 @@ class FirstViewController: UIViewController {
 
 extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return netDataSource.count + 1
+        return netDataSource.count == 0 ? 1 : 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? netDataSource.count : dataSource.count
+        return section == 0 ? 1 : dataSource.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -165,30 +217,112 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 70
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 0 ? "上期开奖结果" : "随机生成历史"
+        return section == 0 ? "上期开奖结果" : "购买历史"
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return indexPath.section == 0 ? .none : .delete
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            do {
-                try database.delete(fromTable: "ticket", where: Ticket.Properties.cate == self.type, orderBy: [Ticket.Properties.date.asOrder(by: .descending)], limit: 1, offset: indexPath.row)
-            } catch let error {
-                debugPrint(error)
-            }
-            reloadData()
+        if indexPath.section == 0 {
+            navigationController?.pushViewController(HistoryViewController(type: type), animated: true)
+            return
         }
+        let ticket = dataSource[indexPath.row]
+        let pasteboard = UIPasteboard.general
+        pasteboard.string = ticket.opencode
     }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        if indexPath.section == 0 { return nil }
+        let ticket = dataSource[indexPath.row]
+        let actionProvider: UIContextMenuActionProvider = { _ in
+            return UIMenu(title: "", children: [
+                UIAction(title: ticket.ticketPurchased! ? "未购" : "已购") { [weak self] _ in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                        self?.sighTicketPurchased(at: indexPath)
+                    }
+                },
+                UIAction(title: "删除", attributes: .destructive, handler: { [weak self] (_) in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                        self?.deleteTicket(at: indexPath)
+                    }
+                })
+            ])
+        }
+
+        return UIContextMenuConfiguration(identifier: "unique-ID" as NSCopying, previewProvider: nil, actionProvider: actionProvider)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if indexPath.section == 0 {
+            return nil
+        }
+        let deleteItem = UIContextualAction(style: .destructive, title: "删除") {  (contextualAction, view, boolValue) in
+            self.deleteTicket(at: indexPath)
+        }
+        let swipeActions = UISwipeActionsConfiguration(actions: [deleteItem])
+        return swipeActions
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if indexPath.section == 0 {
+            return nil
+        }
+        let ticket = dataSource[indexPath.row]
+        let purchasedItem = UIContextualAction(style: .normal, title: ticket.ticketPurchased! ? "未购" : "已购") {  (contextualAction, view, boolValue) in
+            self.sighTicketPurchased(at: indexPath)
+        }
+        purchasedItem.backgroundColor = ticket.ticketPurchased! ? UIColor.lightGray : UIColor.systemBlue
+        let swipeActions = UISwipeActionsConfiguration(actions: [purchasedItem])
+        return swipeActions
+    }
+    
 }
 
+extension FirstViewController {
+    func sighTicketPurchased(at indexPath: IndexPath) {
+        do {
+            var ticket = dataSource[indexPath.row]
+            ticket.ticketPurchased = !ticket.ticketPurchased!
+            try database.update(table: "ticket", on: Ticket.Properties.ticketPurchased, with: ticket, where: Ticket.Properties.opentimestamp == ticket.opentimestamp)
+            dataSource[indexPath.row] = ticket
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        } catch let error {
+            debugPrint(error)
+        }
+    }
+    
+    func deleteTicket(at indexPath: IndexPath) {
+        do {
+            try database.delete(fromTable: "ticket", where: Ticket.Properties.cate == self.type, orderBy: [Ticket.Properties.opentimestamp.asOrder(by: .descending)], limit: 1, offset: indexPath.row)
+            dataSource.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        } catch let error {
+            debugPrint(error)
+        }
+    }
+    
+    func intersection(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
+        guard nums1.count > 0 && nums2.count > 0 else {
+        return []
+        }
+
+        var array = [Int]()
+
+        for item in 0..<nums1.count {
+            for jtem in 0..<nums2.count{
+                if nums1[item] == nums2[jtem] {
+                
+                    if !array.contains(nums1[item]){
+                        array.append(nums1[item])
+                    }
+               
+                }
+            }
+        }
+        return array
+    }
+}
