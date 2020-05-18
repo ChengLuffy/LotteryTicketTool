@@ -8,12 +8,25 @@
 
 import UIKit
 import WCDBSwift
+import BackgroundTasks
+import Moya
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    lazy var backgroundURLSession: URLSession = {
+        let configuration = URLSessionConfiguration.background(withIdentifier: "tech.chengluffy.LotteryTicketTool.refresh.url-session.background")
+        configuration.isDiscretionary = true
+        configuration.timeoutIntervalForRequest = 30
 
+        return URLSession(configuration: configuration)
+    }()
+    lazy var database: Database = {
+        let docPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+        let database = Database(withPath: "\(docPath)/tikets.db")
+        return database
+    }()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -25,6 +38,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try database.create(table: "ticket", of: Ticket.self)
         } catch let error {
             print(error)
+        }
+        
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundTaskIdentifier, using: nil) { task in
+            self.handleAppRefresh(task: task as! BGAppRefreshTask)
         }
         
         return true
@@ -53,5 +70,73 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+}
+
+fileprivate let backgroundTaskIdentifier = "tech.chengluffy.LotteryTicketTool.refresh"
+
+extension AppDelegate {
+    func scheduleAppRefresh() {
+        let request = BGAppRefreshTaskRequest(identifier: backgroundTaskIdentifier)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 60 * 10)
+
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            print("Couldn't schedule app refresh: \(error)")
+        }
+    }
+    
+    func handleAppRefresh(task: BGAppRefreshTask) {
+        scheduleAppRefresh()
+        
+        let url: URL = URL.init(string: "http://f.apiplus.net/dlt-10.json")!
+        let dataTask = backgroundURLSession.dataTask(with: url) { (data, response, err) in
+            if err == nil {
+                do {
+                    let resp = try JSONDecoder().decode(Response.self, from: data!)
+                    
+                    var arr = resp.data.map { (ticket) -> Ticket in
+                        var ticket = ticket
+                        ticket.cate = 2
+                        ticket.degree = 0
+                        ticket.ticketPurchased = false
+                        return ticket
+                    }
+                    
+                    arr = arr.sorted { (a, b) -> Bool in
+                        return a.opentimestamp < b.opentimestamp
+                    }
+                    
+                    do {
+                        for ticket in arr {
+                            let dataSource: [Ticket] = try self.database.getObjects(on: Ticket.CodingKeys.all, fromTable: "ticket", where: Ticket.Properties.expect == ticket.expect && Ticket.Properties.cate == ticket.cate!)
+                            if dataSource.count > 0 {
+                            } else {
+                                try self.database.insert(objects: arr, intoTable: "ticket")
+                            }
+                        }
+                        task.setTaskCompleted(success: true)
+                    } catch {
+                        debugPrint(error)
+                        task.setTaskCompleted(success: false)
+                    }
+                    
+                } catch let error {
+                    debugPrint(error)
+                    task.setTaskCompleted(success: false)
+                }
+                
+            } else {
+                task.setTaskCompleted(success: false)
+            }
+        }
+
+        task.expirationHandler = {
+            dataTask.cancel()
+        }
+
+        dataTask.resume()
+    }
+    
 }
 
