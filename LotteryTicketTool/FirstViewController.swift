@@ -13,6 +13,7 @@ import Moya
 
 class FirstViewController: UIViewController {
     
+    /// 0: 大乐透 1: 双色球
     @IBInspectable open var type: Int = 0
 
     @IBOutlet weak var tableView: UITableView!
@@ -33,14 +34,94 @@ class FirstViewController: UIViewController {
     }
 
     @IBAction func generateAction(_ sender: Any) {
-        guard let expect = expectNext else { return }
-        let ticket = GenerateTicketTool.generateTicket(with: type == 0 ? .sportsLottery : .welfareLottery, expect: expect)
-        do {
-            try database.insert(objects: ticket, intoTable: "ticket")
-        } catch let error {
-            debugPrint(error)
+        
+        let alertC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertC.addAction(UIAlertAction.init(title: "输入", style: .default, handler: { (_) in
+            self.enterCode()
+        }))
+        alertC.addAction(UIAlertAction.init(title: "随机生成", style: .default, handler: { (_) in
+            guard let expect = self.expectNext else { return }
+            let ticket = GenerateTicketTool.generateTicket(with: self.type == 0 ? .sportsLottery : .welfareLottery, expect: expect)
+            do {
+                try self.database.insert(objects: ticket, intoTable: "ticket")
+            } catch let error {
+                debugPrint(error)
+            }
+            self.reloadData()
+        }))
+        alertC.addAction(UIAlertAction.init(title: "取消", style: .cancel, handler: { (_) in
+        }))
+        let presentC = alertC.popoverPresentationController
+        if (presentC != nil) {
+            let view: UIView = (sender as! UIBarButtonItem).value(forKey: "view") as! UIView
+            presentC?.sourceView = view
+            presentC?.sourceRect = view.bounds
+            presentC?.permittedArrowDirections = .any
         }
-        reloadData()
+        
+        present(alertC, animated: true, completion: {
+        })
+    }
+    
+    func enterCode() {
+        let alertC = UIAlertController(title: "手动输入", message: "用点分割", preferredStyle: .alert)
+        alertC.addTextField { (textField) in
+            textField.keyboardType = .decimalPad
+        }
+        alertC.addAction(UIAlertAction.init(title: "确定", style: .default, handler: { (_) in
+            self.saveCode(codeStr: alertC.textFields?.first?.text ?? "")
+        }))
+        alertC.addAction(UIAlertAction.init(title: "取消", style: .cancel, handler: { (_) in
+        }))
+        present(alertC, animated: true) {
+        }
+    }
+    
+    func saveCode(codeStr: String) {
+        guard let expect = expectNext else { return }
+        let date = Date()
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd HH:mm:SS"
+        let opentime = df.string(from: date)
+        let opentimestamp = date.timeIntervalSince1970
+        let arr = codeStr.components(separatedBy: ".")
+        if arr.count == 7 {
+            if type == 0 {
+                let arr1 = arr.prefix(upTo: 5)
+                let arr2 = arr.suffix(from: 5)
+                let openCode = arr1.joined(separator: ",") + "+" + arr2.joined(separator: ",")
+                let ticket = Ticket(expect: "\(expect)", opencode: openCode, opentime: opentime, opentimestamp: Int64(opentimestamp), cate: self.type == 0 ? 0 : 1, ticketPurchased: false, degree: 0)
+                do {
+                    try database.insert(objects: ticket, intoTable: "ticket")
+                    reloadData()
+                } catch {
+                    debugPrint(error)
+                }
+            } else {
+                let arr1 = arr.prefix(upTo: 6)
+                let arr2 = arr.suffix(from: 6)
+                let openCode = arr1.joined(separator: ",") + "+" + arr2.joined(separator: ",")
+                let ticket = Ticket(expect: "\(expect)", opencode: openCode, opentime: opentime, opentimestamp: Int64(opentimestamp), cate: self.type == 0 ? 0 : 1, ticketPurchased: false, degree: 0)
+                do {
+                    try database.insert(objects: ticket, intoTable: "ticket")
+                    reloadData()
+                } catch {
+                    debugPrint(error)
+                }
+            }
+        } else {
+            alertMsg(msg: "输入值验证失败")
+        }
+    }
+    
+    func alertMsg(msg: String) {
+        let alertC = UIAlertController(title: msg, message: nil, preferredStyle: .alert)
+        present(alertC, animated: true) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                alertC.dismiss(animated: true) {
+                }
+            }
+        }
     }
     
     func reloadData() {
@@ -142,6 +223,10 @@ class FirstViewController: UIViewController {
         apiTool.request(type == 0 ? ApiTool.getDLT : ApiTool.getSSQ) { (result) in
             switch result {
             case let .success(result):
+                guard result.response?.statusCode == 200 else {
+                    self.reloadData()
+                    return
+                }
                 let resp = try! result.map(Response.self)
                 
                 var arr = resp.data.map { (ticket) -> Ticket in
